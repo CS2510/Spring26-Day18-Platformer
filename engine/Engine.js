@@ -63,7 +63,7 @@ class Engine {
             //Convert from milliseconds to seconds (hopefully a small fraction of a second)
             const diffInSeconds = diff / 1000
             //Update deltaTime based on the time difference
-            Time.deltaTime = diffInSeconds
+            Time.deltaTime = Math.min(1/60, diffInSeconds)
             //Prepare for the next frame
             Engine.lastTimestamp = time
         }

@@ -18,23 +18,20 @@ class HeroController extends Component {
     this.doubleJump = false
     this.lastJump = -1000
   }
-  onCollisionStay(other, mtv) {
+  handleCollision(other, mtv) {
     if (this.rigidBody.velocity.y > 0 && mtv.y < 0) {
       this.rigidBody.velocity.y = 0
       this.isGrounded = true
     }
-    if(this.rigidBody.velocity.y < 0 && mtv.y > 0){
+    if (this.rigidBody.velocity.y < 0 && mtv.y > 0) {
       this.rigidBody.velocity.y = 0
     }
-    // const result = Collisions.isCollisionGameObjectGameObject(this.gameObject, other)
-    // if (!result)
-    //   return
-    // if (result.x == 0) {
-    //   if(Math.sign(result.y) != Math.sign(this.gameObject.getComponent(RigidBody).velocity.y))
-    //     this.gameObject.getComponent(RigidBody).velocity.y = 0
-    //   if(result.y < 0)
-    //       this.isGrounded = true
-    // }
+  }
+  onCollisionEnter(other, mtv) {
+    this.handleCollision(other, mtv)
+  }
+  onCollisionStay(other, mtv) {
+    this.handleCollision(other, mtv)
   }
   fixedUpdate() {
     let direction = new Vector2(0, 0)
@@ -47,39 +44,21 @@ class HeroController extends Component {
     this.isGrounded = false
   }
   update() {
-
+    const jumpStrength = -75  
+    const minJumpTime = .1
+    const maxJumpTime = .3
 
     if (Input.keysDownThisFrame.includes("Space") && (this.isGrounded || this.doubleJump)) {
-      this.rigidBody.velocity.y = -100
+      this.rigidBody.velocity.y = jumpStrength
       this.doubleJump = !this.doubleJump
       this.lastJump = Time.time
     }
-    else if(Time.time - this.lastJump < .01) {
-      this.rigidBody.velocity.y = -100
+    else if (Time.time - this.lastJump < minJumpTime) {
+      this.rigidBody.velocity.y = jumpStrength
     }
-    else if(Input.keysDown.includes("Space") && Time.time-this.lastJump < 6.4){
-      this.rigidBody.velocity.y = -100
+    else if (Input.keysDown.includes("Space") && Time.time - this.lastJump < maxJumpTime) {
+      this.rigidBody.velocity.y = jumpStrength
     }
-
-    // const jumpPower = 150
-    // const maxJumpTime = .3
-    // const minJumpTime = .1
-
-    // this.jumpTimer+=Time.deltaTime
-
-    // if (Input.keysDownThisFrame.includes("Space") && this.isGrounded) {
-    //   this.gameObject.getComponent(RigidBody).velocity.y = -jumpPower
-    //   this.jumpTimer = 0
-    //   this.isGrounded = false
-    // }
-
-    // if (Input.keysDown.includes("Space") && this.jumpTimer < maxJumpTime || this.jumpTimer < minJumpTime) {
-    //   this.gameObject.getComponent(RigidBody).velocity.y = -jumpPower
-    // }
-
-    // if (Input.keysUpThisFrame.includes("Space")) {
-    //   this.jumpTimer = maxJumpTime
-    // }
   }
 
 }
