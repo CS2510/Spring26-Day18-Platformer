@@ -6,18 +6,36 @@
  * See https://docs.unity3d.com/ScriptReference/SceneManagement.Scene.html
  */
 class Scene {
+    /**
+     * List of game objects in the scene
+     * See https://docs.unity3d.com/ScriptReference/SceneManagement.Scene.GetRootGameObjects.html
+     * @type {GameObject[]}
+     */
     gameObjects = []
 
     lastFrameMouseCollisions = []
     lastFrameCollisions = [] // Two polygons overlapping
     previousMouseDowns = []
 
+    /**
+     * Instantiate a new game object in the scene.
+     * This function should only be called in the constructor of classes that descend from the Scene class.
+     * When creating new game objects in components, call the static version
+     * 
+     * @param {GameObject} gameObject The game object to instantiate
+     * @param {Vector2} [position] The position of the game object to instantiate
+     * @returns {GameObject} The created game object
+     */
     instantiate(gameObject, position) {
         this.gameObjects.push(gameObject)
-        gameObject.components[0].position = position
+        gameObject.transform.position = position
         return gameObject
     }
 
+    /**
+     * Update the game objects in the scene
+     * This includes handling physics and removing game objects
+     */
     update() {
 
         for (const gameObject of this.gameObjects) {
@@ -180,6 +198,10 @@ class Scene {
         this.gameObjects = this.gameObjects.filter(go => !go.markForDestroy)
     }
 
+    /**
+     * Draw all the game objects to the screen
+     * @param {CanvasRenderingContext2D} ctx The context to which we are drawing
+     */
     draw(ctx) {
         for (const gameObject of this.gameObjects) {
             gameObject.draw(ctx)
@@ -187,6 +209,15 @@ class Scene {
     }
 }
 
+/**
+ * Instantiate a new game object in the current scene.
+ * 
+ * See https://docs.unity3d.com/6000.2/Documentation/ScriptReference/Object.Instantiate.html
+ * 
+ * @param {GameObject} gameObject The game object to add to the current scene
+ * @param {Vector2} position The position of the game object
+ * @returns {GameObject} The created game object
+ */
 function instantiate(gameObject, position) {
     return Engine.currentScene.instantiate(gameObject, position)
 }

@@ -1,5 +1,13 @@
 // Please carefully review the rules about academic integrity found in the academicIntegrity.md file found at the root of this project.
 
+
+/**
+ * The class that does collision detection in a scene.
+ * This should not be called directly by any game components.
+ * Instead, components should listen for collision events
+ * 
+ */
+
 class Collisions {
     static isOverlapPointVertices(point, vertices) {
         if (!(point >= Math.min(...vertices) && point <= Math.max(...vertices))) {

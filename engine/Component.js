@@ -7,8 +7,16 @@
  * See: https://docs.unity3d.com/ScriptReference/Component.html
  */
 class Component{
+    /**
+     * @type {GameObject} The parent of this component
+     * See https://docs.unity3d.com/ScriptReference/Component-gameObject.html
+     */
     gameObject
 
+    /**
+     * Get the transform of the parent game object.
+     * See https://docs.unity3d.com/ScriptReference/Component-transform.html
+     */
     get transform(){
         return this.gameObject.transform
     }
